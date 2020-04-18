@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class View {
     private BorderPane mainView;
     private Scene scene;
+    private Sphere sphere;
 
     private Controller controller;
 
@@ -27,7 +28,7 @@ public class View {
     }
 
     public void createAndConfigurePane() {
-        Sphere sphere = new Sphere(250);
+        sphere = new Sphere(250);
 
         Group group = new Group();
         group.getChildren().add(sphere);
@@ -40,17 +41,6 @@ public class View {
         sphere.translateYProperty().set(800 / 2);
 
         mainView.getChildren().add(group);
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, event ->{
-            switch (event.getCode()) {
-                case W:
-                    sphere.translateZProperty().set(sphere.getTranslateZ() + 100);
-                    break;
-                case S:
-                    sphere.translateZProperty().set(sphere.getTranslateZ() - 100);
-                    break;
-            }
-        });
     }
 
 }
