@@ -6,6 +6,7 @@ import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import lombok.Data;
@@ -32,15 +33,17 @@ public class View {
 
     public void createAndConfigurePane() {
         prepareGroup();
-
-        box = new Box(100, 20, 50);
+        createBox();
         group.getChildren().add(box);
-
-        Camera camera = new PerspectiveCamera();
-        scene.setFill(Color.SILVER);
-        scene.setCamera(camera);
-
+        prepareCamera();
         mainView.getChildren().add(group);
+    }
+
+    private void createBox() {
+        box = new Box(100, 20, 50);
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.ROYALBLUE);
+        box.setMaterial(material);
     }
 
     private void prepareGroup() {
@@ -49,6 +52,12 @@ public class View {
         group.translateYProperty().set(800 / 2);
         group.translateZProperty().set(-1200);
 
+    }
+
+    private void prepareCamera() {
+        Camera camera = new PerspectiveCamera();
+        scene.setFill(Color.SILVER);
+        scene.setCamera(camera);
     }
 
 }
