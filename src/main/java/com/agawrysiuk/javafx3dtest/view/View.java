@@ -3,12 +3,11 @@ package com.agawrysiuk.javafx3dtest.view;
 import com.agawrysiuk.javafx3dtest.controller.Controller;
 import com.agawrysiuk.javafx3dtest.utils.TransformGroup;
 import javafx.scene.*;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Sphere;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +41,8 @@ public class View {
     private void createBox() {
         box = new Box(100, 20, 50);
         PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.ROYALBLUE);
+//        material.setDiffuseColor(Color.ROYALBLUE);
+        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/wood.jpg")));
         box.setMaterial(material);
     }
 
