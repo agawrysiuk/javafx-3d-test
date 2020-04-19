@@ -6,6 +6,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
@@ -73,8 +74,13 @@ public class Controller {
         });
 
         scene.setOnMouseDragged(event -> {
-            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+            angleX.set(anchorAngleX - anchorY + event.getSceneY());
             angleY.set(anchorAngleY + anchorX - event.getSceneX());
+        });
+
+        scene.addEventHandler(ScrollEvent.SCROLL, event -> {
+            double delta = event.getDeltaY();
+            group.translateZProperty().set(group.getTranslateZ() + delta);
         });
     }
 }
