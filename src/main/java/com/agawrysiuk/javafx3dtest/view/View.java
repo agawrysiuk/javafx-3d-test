@@ -2,6 +2,7 @@ package com.agawrysiuk.javafx3dtest.view;
 
 import com.agawrysiuk.javafx3dtest.controller.Controller;
 import com.agawrysiuk.javafx3dtest.utils.TransformGroup;
+import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 import javafx.animation.AnimationTimer;
 import javafx.scene.*;
 import javafx.scene.image.Image;
@@ -10,10 +11,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Mesh;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
 
 @Data
 @Slf4j
@@ -36,8 +42,17 @@ public class View {
 
     public void createAndConfigurePane() {
         prepareGroup();
-        group.getChildren().add(createBox(100,20,50));
-        group.getChildren().add(createBox(20,100,40));
+//        group.getChildren().add(createBox(100,20,50));
+//        group.getChildren().add(createBox(20,100,40));
+        StlMeshImporter importer = new StlMeshImporter();
+        importer.read(getClass().getResource("/ALIEN.stl"));
+        Mesh mesh = importer.getImport();
+        MeshView meshView = new MeshView(mesh);
+        meshView.setScaleX(75);
+        meshView.setScaleY(75);
+        meshView.setScaleZ(75);
+        meshView.getTransforms().setAll(new Rotate(90, Rotate.X_AXIS),new Rotate(180, Rotate.Y_AXIS));
+        group.getChildren().add(meshView);
         group.getChildren().addAll(prepareLightSource());
         prepareCamera();
         mainView.getChildren().addAll(group);
@@ -71,7 +86,7 @@ public class View {
 
     private Node[] prepareLightSource() {
         light = new PointLight();
-        light.setColor(Color.RED);
+        light.setColor(Color.DARKGREEN);
         light.getTransforms().add(new Translate(0, -60, 10));
         return new Node[]{light, bindToLight(light)};
     }
