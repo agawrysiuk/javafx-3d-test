@@ -2,6 +2,7 @@ package com.agawrysiuk.javafx3dtest.view;
 
 import com.agawrysiuk.javafx3dtest.controller.Controller;
 import com.agawrysiuk.javafx3dtest.utils.TransformGroup;
+import javafx.animation.AnimationTimer;
 import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Translate;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ public class View {
     private Pane mainView;
     private Scene scene;
     private Box box;
+    private PointLight light;
     private TransformGroup group;
 
     private Controller controller;
@@ -35,9 +38,11 @@ public class View {
     public void createAndConfigurePane() {
         prepareGroup();
         createBox();
-        group.getChildren().addAll(box, prepareLightSource());
+        group.getChildren().add(box);
+        group.getChildren().addAll(prepareLightSource());
         prepareCamera();
         mainView.getChildren().addAll(group);
+        createLightAnimation();
     }
 
     private void createBox() {
@@ -64,11 +69,29 @@ public class View {
         scene.setCamera(camera);
     }
 
-    private LightBase prepareLightSource() {
-        PointLight pointLight = new PointLight();
-        pointLight.setColor(Color.RED);
-        pointLight.getTransforms().add(new Translate(0,-50,-50));
-        return pointLight;
+    private Node[] prepareLightSource() {
+        light = new PointLight();
+        light.setColor(Color.RED);
+        light.getTransforms().add(new Translate(0, -60, 10));
+        return new Node[]{light, bindToLight(light)};
+    }
+
+    private Sphere bindToLight(PointLight pointLight) {
+        Sphere sphere = new Sphere(2);
+        sphere.getTransforms().setAll(pointLight.getTransforms());
+        sphere.rotateProperty().bind(pointLight.rotateProperty());
+        sphere.rotationAxisProperty().bind(pointLight.rotationAxisProperty());
+        return sphere;
+    }
+
+    private void createLightAnimation() {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                light.setRotate(light.getRotate() + 1);
+            }
+        };
+        timer.start();
     }
 
 }
