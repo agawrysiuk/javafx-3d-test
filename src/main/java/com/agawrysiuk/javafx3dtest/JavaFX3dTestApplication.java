@@ -18,7 +18,7 @@ public class JavaFX3dTestApplication extends Application {
 	public void start(Stage stage) throws Exception {
 		Controller controller = new Controller();
 		View view = new View(controller);
-		Scene scene = new Scene(view.asParent(), 1400, 800);
+		Scene scene = new Scene(view.asParent(), 1400, 800,true);
 		view.setScene(scene);
 		view.createAndConfigurePane();
 		controller.setView(view);

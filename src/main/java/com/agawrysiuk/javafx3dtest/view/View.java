@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class View {
     private Pane mainView;
     private Scene scene;
-    private Box box;
     private PointLight light;
     private TransformGroup group;
 
@@ -37,22 +36,23 @@ public class View {
 
     public void createAndConfigurePane() {
         prepareGroup();
-        createBox();
-        group.getChildren().add(box);
+        group.getChildren().add(createBox(100,20,50));
+        group.getChildren().add(createBox(20,100,40));
         group.getChildren().addAll(prepareLightSource());
         prepareCamera();
         mainView.getChildren().addAll(group);
         createLightAnimation();
     }
 
-    private void createBox() {
-        box = new Box(100, 20, 50);
+    private Box createBox(double width, double height, double depth) {
+        Box box = new Box(width, height, depth);
         PhongMaterial material = new PhongMaterial();
 //        material.setDiffuseColor(Color.ROYALBLUE);
         material.setDiffuseMap(new Image(getClass().getResourceAsStream("/wood.jpg")));
         material.setSpecularColor(Color.SILVER);
         material.setSpecularPower(20.0);
         box.setMaterial(material);
+        return box;
     }
 
     private void prepareGroup() {
